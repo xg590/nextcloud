@@ -41,7 +41,8 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
 ```
   docker-compose up
 ```
-
+8. Setup administrator account and link database to nextcloud<br>
+![alt text](https://raw.githubusercontent.com/xg590/nextcloud/master/nextcloud_admin.png "real rover")
 ### Preserve Data
 In the above <b>docker-compose.yaml</b>, we have
 ```
