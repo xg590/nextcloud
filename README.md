@@ -38,11 +38,16 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
   # Change the Time Zone 
   ENV TZ=Europe/Amsterdam 
 ``` 
-7. Start services
+7. Edit ./nextcloud/autoconfig.php (You need the following account info to manage the nextcloud)
+```
+  "adminlogin"    => "admin_name",                
+  "adminpass"     => "admin_passwd", 
+```
+8. Start services
 ```
   docker-compose up
 ```
-8. Setup administrator account and link database to nextcloud<br>
+9. Setup administrator account and link database to nextcloud<br>
 ![alt text](https://raw.githubusercontent.com/xg590/nextcloud/master/nextcloud_admin.png "real rover")
 ### Useful docker command
 ```
