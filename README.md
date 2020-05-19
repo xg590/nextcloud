@@ -2,6 +2,7 @@
 ## Highlights
 * Apache + PHP + Nextcloud + MariaDB
 * Maximum customization: public file sharing (https://my_domain_name/file) and private cloud (https://my_domain_name/cloud) at the same time.
+* database is accessible from <i>intranet</i>
 ## Plan
 1. Using official image of MariaDB
 2. Build a personalized image, in which the apache2 and php are installed. 
