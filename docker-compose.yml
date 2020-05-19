@@ -1,0 +1,37 @@
+version: '3'
+
+services: 
+  db:
+    container_name: db_container
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - db_vol:/var/lib/mysql 
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=dbname
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=passwd
+    networks:
+      - intranet 
+ 
+  nextcloud:
+    depends_on:
+      - db 
+    build: ./nextcloud
+    restart: always 
+    ports: 
+      - 443:443
+    volumes:   
+      - /etc/letsencrypt/live/my_domain_name/fullchain.pem:/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/my_domain_name/privkey.pem:/ssl/privkey.pem:ro  
+      - /root/file:/var/www/html/file:ro
+    networks:
+      - intranet
+        
+volumes:
+  db_vol:  
+    
+networks:
+  intranet: 
