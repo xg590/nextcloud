@@ -8,8 +8,8 @@
 3. In the same image, nextcloud is placed in /var/www/html/nextcloud while pulic files are in /var/www/html/file
 ## Procedure
 1. [Install](https://github.com/xg590/tutorials/blob/master/docker/setup.md) docker-compose
-2. [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) ssl certificate from <i>let's encrypt</i>
-* Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) appears in <i>/etc/letsencrypt/live/my_domain_name/</i>
+2. [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) ssl certificate from <i>let's encrypt</i><br>
+Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) appears in <i>/etc/letsencrypt/live/my_domain_name/</i>
 3. Place this repository on server
 4. Change configurations<br>
 4.1 Edit ./docker-compose.yml 
