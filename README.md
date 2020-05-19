@@ -11,8 +11,7 @@
 2. [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) ssl certificate from <i>let's encrypt</i><br>
 Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) appears in <i>/etc/letsencrypt/live/my_domain_name/</i>
 3. Place this repository on server
-4. Change configurations<br>
-4.1 Edit ./docker-compose.yml 
+4. Edit ./docker-compose.yml 
 ```
   services:
     db:
@@ -27,18 +26,18 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
         - /etc/letsencrypt/live/my_domain_name/privkey.pem:/ssl/privkey.pem:ro  
         - /path_to_a_directory_you_like:/var/www/html/file:ro 
 ```
-4.2 Edit ./nextcloud/000-default.conf
+5. Edit ./nextcloud/000-default.conf
 ```
   <VirtualHost *:443>
   	ServerName my_domain_name
   </VirtualHost>
 ```
-4.3 Edit ./nextcloud/Dockerfile
+6. Edit ./nextcloud/Dockerfile
 ```
 # Change the Time Zone 
 ENV TZ=Europe/Amsterdam 
 ``` 
-5. Start services
+7. Start services
 ```
 docker-compose up
 ```
