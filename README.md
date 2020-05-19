@@ -1,4 +1,4 @@
-# Dockerized Nextcloud
+# Dockerize Nextcloud
 ## Highlights
 * Apache + PHP + Nextcloud + MariaDB
 * Maximum customization: public file sharing (https://my_domain_name/file) and private cloud (https://my_domain_name/cloud) at the same time.
