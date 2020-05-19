@@ -34,10 +34,10 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
 ```
 6. Edit ./nextcloud/Dockerfile
 ```
-# Change the Time Zone 
-ENV TZ=Europe/Amsterdam 
+  # Change the Time Zone 
+  ENV TZ=Europe/Amsterdam 
 ``` 
 7. Start services
 ```
-docker-compose up
+  docker-compose up
 ```
