@@ -43,7 +43,11 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
 ```
 8. Setup administrator account and link database to nextcloud<br>
 ![alt text](https://raw.githubusercontent.com/xg590/nextcloud/master/nextcloud_admin.png "real rover")
-
+### Useful docker command
+```
+docker ps
+docker exec container_name sh -c "ls -l /var/www/html"
+```
 ### Administration with [Provisional API](https://docs.nextcloud.com/server/stable/admin_manual/configuration_user/user_provisioning_api.html)
 #### Create User
 ```
