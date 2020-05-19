@@ -43,24 +43,35 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
 ```
 8. Setup administrator account and link database to nextcloud<br>
 ![alt text](https://raw.githubusercontent.com/xg590/nextcloud/master/nextcloud_admin.png "real rover")
-### Preserve Data
-In the above <b>docker-compose.yaml</b>, we have
+
+### Administration with [Provisional API](https://docs.nextcloud.com/server/stable/admin_manual/configuration_user/user_provisioning_api.html)
+#### Create User
 ```
-services:
-  db: 
-    volumes:
-      - db_vol:/var/lib/mysql  
+import requests
+url     = 'https://personal_domain/ocs/v1.php/cloud/users'
+auth    = ('admin_name', 'admin_passwd')
+headers = {"OCS-APIRequest": "true", "Content-Type": "application/x-www-form-urlencoded"}
+data    = {'userid':'newuser_name', 'password':'newuser_password', 'displayName':'Hewlett'}
+
+r = requests.post(url, auth=auth, headers=headers, data=data)
+print(r.text)
 ```
-*  If mount host directory to container in volume, then the data of each user will retain at <i>/var/www/nextcloud</i> of host machine.
-``` 
-    volumes:
-      - /var/lib/mysql:/var/lib/mysql
+Anticipated Outcome
 ```
-* If name a volume and the data will stay at <i>/var/lib/docker/volumes/</i>
-``` 
-    volumes:
-      - db_vol:/var/lib/mysql
-``` 
+<?xml version="1.0"?>
+<ocs>
+  <meta>
+    <status>ok</status>
+    <statuscode>100</statuscode>
+    <message>OK</message>
+    <totalitems></totalitems>
+    <itemsperpage></itemsperpage>
+  </meta>
+  <data>
+    <id>newuser_name</id>
+  </data>
+</ocs>
+```
 ### Refresh Nextcloud and a fresh Nextcloud is born
 Remove containers and volumes
 ```
@@ -68,10 +79,3 @@ $ docker-compose rm -v -s -f
 $ docker volume ls
 $ docker volume prune -f
 ```
-### Nextcloud Console [manual](https://docs.nextcloud.com/server/18/admin_manual/configuration_server/occ_command.html)
-```
-$ docker-compose exec --user www-data nextcloud_fpm_version php occ
-$ docker-compose exec --user www-data nextcloud_fpm_version php occ user:lastseen <username>
-$ docker-compose exec --user www-data nextcloud_fpm_version php occ user:add --display-name="ABC" abc 
-```
-
