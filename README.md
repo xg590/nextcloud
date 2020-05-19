@@ -43,12 +43,12 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
   "adminlogin"    => "admin_name",                
   "adminpass"     => "admin_passwd", 
 ```
+Without a correct autoconfig.php, this would be the page saw at first login<br>
+![alt text](https://raw.githubusercontent.com/xg590/nextcloud/master/nextcloud_admin.png "real rover")<br>
 8. Start services
 ```
   docker-compose up
 ```
-9. Setup administrator account and link database to nextcloud<br>
-![alt text](https://raw.githubusercontent.com/xg590/nextcloud/master/nextcloud_admin.png "real rover")
 ### Useful docker command
 ```
 docker ps
