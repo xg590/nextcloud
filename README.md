@@ -41,7 +41,7 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
   # Change the Time Zone 
   ENV TZ=Europe/Amsterdam 
 ``` 
-7. Edit ./nextcloud/autoconfig.php (You need the following account info to manage the nextcloud) 自动部署文件，有了它，我们就能跳过nextcloud提示我们设置管理员密码的页面
+7. Edit ./nextcloud/autoconfig.php (You need the following account info to manage the nextcloud) 自动部署文件，有了它，我们就能跳过nextcloud提示我们设置管理员密码的[页面](https://github.com/xg590/miscellaneous/blob/master/nextcloud_admin.png)
 ```
   "adminlogin"    => "admin_name",                
   "adminpass"     => "admin_passwd", 
