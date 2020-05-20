@@ -13,7 +13,7 @@ Nextcloud是一个云应用平台，本身具有文件共享功能，同时可�
 1. [Install](https://github.com/xg590/tutorials/blob/master/docker/setup.md) docker-compose 此处我们安装docker-compose
 2. [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) ssl certificate from <i>let's encrypt</i> 此处我们为服务器配置SSL证书<br>
 Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) appears in <i>/etc/letsencrypt/live/my_domain_name/</i>现在我们可以在前述目录里找到证书和密钥。
-3. Place this [repository](https://github.com/xg590/nextcloud/archive/master.zip) on server把这个项目的复制到本地
+3. Place this [repository](https://github.com/xg590/nextcloud/archive/master.zip) on server 把这个项目复制到本地
 4. Edit ./docker-compose.yml 修改一下路径，保证指向证书和密钥，修改一下路径，把我们想分享的文件夹添上
 ```
   services:
@@ -56,7 +56,7 @@ docker ps
 docker exec container_name sh -c "ls -l /var/www/html"
 ```
 ### Administration with [Provisional API](https://docs.nextcloud.com/server/stable/admin_manual/configuration_user/user_provisioning_api.html)
-#### Create User
+#### Create User 编程创建用户
 ```
 import requests
 url     = 'https://personal_domain/ocs/v1.php/cloud/users'
