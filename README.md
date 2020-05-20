@@ -10,6 +10,7 @@ Nextcloud是一个云应用平台，本身具有文件共享功能，同时可�
 2. Build a personalized image, in which the apache2 and php are installed. 
 3. In the same image, nextcloud is placed in /var/www/html/nextcloud while pulic files are in /var/www/html/file
 ## Procedure
+总的来说，安装docker，配置证书，复制项目，修改配置文件，启动。
 1. [Install](https://github.com/xg590/tutorials/blob/master/docker/setup.md) docker-compose 此处我们安装docker-compose
 2. [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) ssl certificate from <i>let's encrypt</i> 此处我们为服务器配置SSL证书<br>
 Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) appears in <i>/etc/letsencrypt/live/my_domain_name/</i>现在我们可以在前述目录里找到证书和密钥。
@@ -49,7 +50,6 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
 ```
   docker-compose up
 ```
-总的来说，安装docker，配置证书，复制项目，修改配置文件，启动。
 ### Useful docker command
 ```
 docker ps
