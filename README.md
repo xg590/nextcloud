@@ -1,6 +1,10 @@
 # Dockerize/容器化 Nextcloud
-## 概述
-Nextcloud是一个云应用平台，本身具有文件共享功能，同时可以通过插件进行视频，语音，文字交流。这里我们把它Nextcloud部署到自己的服务器上，形成一个社交平台。Nextcloud强制要求使用SSL加密消息，因此要求服务器本身拥有域名。本文试图将Nextcloud容器化，以便迁移和简化部署过程。容器container技术为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中。用户拿到记录资源详情的配置文件，使用非常简单的命令，就能让程序运行起来。比如此例，仅需改动几个配置文件，然后运行，我们就能得到Nextcloud这个社交平台。
+## 中文概述
+* Nextcloud是一个云应用平台，本身具有文件共享功能，同时可以通过插件进行视频，语音，文字交流，因此可以将之变为社交工具。 
+* Nextcloud强制要求使用SSL加密消息，因此要求<b>参与部署的服务器本身必须拥有域名</b>。
+* 本文描述将Nextcloud容器化的过程。
+* 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中。
+* 此例中，仅需改动几个相关的配置文件，容器就能产生于服务器上，提供给用户Nextcloud这个社交工具。
 ## Highlights 
 * Apache + PHP + Nextcloud + MariaDB
 * Maximum customization: public file sharing (https://my_domain_name/file) and private cloud (https://my_domain_name/cloud) at the same time.
@@ -10,7 +14,7 @@ Nextcloud是一个云应用平台，本身具有文件共享功能，同时可�
 2. Build a personalized image, in which the apache2 and php are installed. 
 3. In the same image, nextcloud is placed in /var/www/html/nextcloud while pulic files are in /var/www/html/file
 ## Procedure
-总的来说，安装docker，配置证书，复制项目，修改配置文件，启动。
+总的来说，安装docker，从letsencrypt处拿到免费的SSL证书，修改容器的配置文件，启动容器，voila。
 1. [Install](https://github.com/xg590/tutorials/blob/master/docker/setup.md) docker-compose 此处我们安装docker-compose
 2. [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) ssl certificate from <i>let's encrypt</i> 此处我们为服务器配置SSL证书<br>
 Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) appears in <i>/etc/letsencrypt/live/my_domain_name/</i>现在我们可以在前述目录里找到证书和密钥。
@@ -44,6 +48,9 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
 ``` 
 7. Edit ./autoconfig.php (You need the following account info to manage the nextcloud) 自动部署文件，有了它，我们就能跳过nextcloud提示我们设置管理员密码的[页面](https://github.com/xg590/miscellaneous/blob/master/nextcloud_admin.png)
 ```
+  "dbname"        => "dbname",
+  "dbuser"        => "username",
+  "dbpass"        => "passwd",
   "adminlogin"    => "admin_name",                
   "adminpass"     => "admin_passwd", 
 ``` 
@@ -93,3 +100,4 @@ $ docker-compose rm -v -s -f
 $ docker volume ls
 $ docker volume prune -f
 ```
+### 
