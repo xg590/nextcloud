@@ -15,7 +15,7 @@ Nextcloud是一个云应用平台，本身具有文件共享功能，同时可�
 2. [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) ssl certificate from <i>let's encrypt</i> 此处我们为服务器配置SSL证书<br>
 Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) appears in <i>/etc/letsencrypt/live/my_domain_name/</i>现在我们可以在前述目录里找到证书和密钥。
 3. Place this [repository](https://github.com/xg590/nextcloud/archive/master.zip) on server 把这个项目复制到本地
-4. Edit ./docker-compose.yml 修改一下路径，保证指向证书和密钥，修改一下路径，把我们想分享的文件夹添上
+4. Edit ./docker-compose.yml 修改环境变量，修改证书和密钥路径，把想分享的文件夹添上，把自动配置文件放进容器
 ```
   services:
     db:
@@ -26,9 +26,10 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
         - MYSQL_PASSWORD=passwd 
     nextcloud:
       volumes:
-        - /etc/letsencrypt/live/my_domain_name/fullchain.pem:/ssl/fullchain.pem:ro
-        - /etc/letsencrypt/live/my_domain_name/privkey.pem:/ssl/privkey.pem:ro  
-        - /path_to_a_directory_you_like:/var/www/html/file:ro 
+      - /root/file:/var/www/html/file:ro
+      - /etc/letsencrypt/live/my_domain_name/privkey.pem:/ssl/privkey.pem:ro  
+      - /etc/letsencrypt/live/my_domain_name/fullchain.pem:/ssl/fullchain.pem:ro
+      - /root/nextcloud-master/autoconfig.php:/var/www/html/nextcloud/config/autoconfig.php:ro
 ```
 5. Edit ./nextcloud/000-default.conf 把服务器域名在文件里指出来
 ```
@@ -41,7 +42,7 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
   # Change the Time Zone 
   ENV TZ=Europe/Amsterdam 
 ``` 
-7. Edit ./nextcloud/autoconfig.php (You need the following account info to manage the nextcloud) 自动部署文件，有了它，我们就能跳过nextcloud提示我们设置管理员密码的[页面](https://github.com/xg590/miscellaneous/blob/master/nextcloud_admin.png)
+7. Edit ./autoconfig.php (You need the following account info to manage the nextcloud) 自动部署文件，有了它，我们就能跳过nextcloud提示我们设置管理员密码的[页面](https://github.com/xg590/miscellaneous/blob/master/nextcloud_admin.png)
 ```
   "adminlogin"    => "admin_name",                
   "adminpass"     => "admin_passwd", 
@@ -50,6 +51,8 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
 ```
   docker-compose up
 ```
+9. Delete ./autoconfig.php<br>
+<b>There will be a serious security problem without deleting autoconfig.php.</b> See the explanation below.[*]
 ### Useful docker command
 ```
 docker ps
