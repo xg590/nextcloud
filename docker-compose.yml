@@ -17,6 +17,7 @@ services:
       - intranet 
  
   nextcloud:
+    container_name: nextcloud
     depends_on:
       - db 
     build: ./nextcloud
