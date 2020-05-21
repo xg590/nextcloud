@@ -6,17 +6,35 @@
 * 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中。
 * 此例中，仅需改动几个相关的配置文件，容器就能产生于服务器上，提供给用户Nextcloud这个社交工具。
 ## Highlights 
-* Apache + PHP + Nextcloud + MariaDB
+* Few steps and deploy in minutes
 * Maximum customization: public file sharing (https://my_domain_name/file) and private cloud (https://my_domain_name/cloud) at the same time. 
 ## Plan
 1. Using official image of MariaDB
 2. Build a personalized image, in which the apache2 and php are installed. 
 3. In the same image, nextcloud is placed in /var/www/html/nextcloud while pulic files are in /var/www/html/file
+## Prerequisite: 
+* [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) a ssl certificate from <i>Let's Encrypt</i> 拿一个免费SSL证书<br>
+* A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
+## Test this repository 
+Run following commands and the Nextcloud would be online. The only caveat is about <i>sed</i>. 运行下面几行命令，Nextcloud就能使用了。 
+```
+sudo su
+apt update && apt install -y docker.io 
+wget https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 -O docker-compose
+chmod 555 docker-compose
+mv docker-compose /usr/local/bin
+wget https://github.com/xg590/nextcloud/archive/master.zip
+unzip master.zip
+cd nextcloud-master/
+sed -i 's/placeholder_domain_name/Here_is_your_domain_name/g' docker-compose.yml nextcloud/000-default.conf
+docker-compose up
+```
+## Clean above test
+During the test, username and passwd are default values. Now they should be personalized and a new 
 ## Procedure
 总的来说，安装docker，从letsencrypt处拿到免费的SSL证书，修改容器的配置文件，启动容器，voila。
 1. [Install](https://github.com/xg590/tutorials/blob/master/docker/setup.md) docker-compose 此处我们安装docker-compose
-2. [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) ssl certificate from <i>let's encrypt</i> 此处我们为服务器配置SSL证书<br>
-Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) appears in <i>/etc/letsencrypt/live/my_domain_name/</i>现在我们可以在前述目录里找到证书和密钥。
+
 3. Place this [repository](https://github.com/xg590/nextcloud/archive/master.zip) on server 把这个项目复制到本地
 4. Edit ./docker-compose.yml 修改环境变量，修改证书和密钥路径，把想分享的文件夹添上，把自动配置文件放进容器
 ```
@@ -57,7 +75,13 @@ Now a public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) 
 ```
   docker-compose up
 ```
-9. Delete ./autoconfig.php<br>
+9. Comment out (using #) one line in ./docker-compose.yml<br>
+```
+  services: 
+    nextcloud:
+      volumes: 
+#      - /root/nextcloud-master/autoconfig.php:/var/www/html/nextcloud/config/autoconfig.php:ro
+```
 <b>There will be a serious security problem without deleting autoconfig.php.</b> See the explanation below.[*]
 ### Useful docker command
 ```
@@ -99,4 +123,5 @@ $ docker-compose rm -v -s -f
 $ docker volume ls
 $ docker volume prune -f
 ```
-### 
+### Security concerns
+
