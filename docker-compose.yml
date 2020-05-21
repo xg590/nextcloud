@@ -26,8 +26,8 @@ services:
       - 443:443
     volumes:   
       - /root/file:/var/www/html/file:ro
-      - /etc/letsencrypt/live/my_domain_name/privkey.pem:/ssl/privkey.pem:ro  
-      - /etc/letsencrypt/live/my_domain_name/fullchain.pem:/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/placeholder_domain_name/privkey.pem:/ssl/privkey.pem:ro  
+      - /etc/letsencrypt/live/placeholder_domain_name/fullchain.pem:/ssl/fullchain.pem:ro
       - /root/nextcloud-master/autoconfig.php:/var/www/html/nextcloud/config/autoconfig.php:ro
     networks:
       - intranet
