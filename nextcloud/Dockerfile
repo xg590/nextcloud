@@ -15,7 +15,7 @@ RUN apt install -y wget apache2        \
 				   libapache2-mod-php 
 				   
 RUN rm -rf /var/lib/apt/lists/*    
-RUN wget https://download.nextcloud.com/server/releases/latest.tar.bz2 >/dev/null 2>&1 
+RUN wget --progress=bar:force:noscroll https://download.nextcloud.com/server/releases/latest.tar.bz2 >/dev/null 2>&1 
 RUN mkdir -p /var/www/html/ 
 RUN tar jxvf latest.tar.bz2 -C /var/www/html/
 RUN rm latest.tar.bz2   
