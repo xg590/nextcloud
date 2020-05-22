@@ -26,7 +26,7 @@ mv docker-compose /usr/local/bin
 wget https://github.com/xg590/nextcloud/archive/master.zip
 unzip master.zip
 cd nextcloud-master/
-sed -i 's/placeholder_domain_name/Here_is_your_domain_name/g' docker-compose.yml nextcloud/000-default.conf
+sed -i 's/Here_should_be_your_domain_name/your_domain_name/g' docker-compose.yml nextcloud/000-default.conf
 docker-compose up
 ```
 ## Clean above test
