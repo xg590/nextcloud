@@ -1,5 +1,5 @@
 # Dockerize/容器化 Nextcloud
-## Chinese Summary 中文概述
+## Chinese Summary/中文概述
 * Nextcloud是一个云应用平台，本身具有文件共享功能，同时可以通过插件进行视频，语音，文字交流，因此可以将之变为社交工具。 
 * Nextcloud强制要求使用SSL加密消息，因此要求<b>参与部署的服务器本身必须拥有域名</b>。
 * 本文描述将Nextcloud容器化的过程。
