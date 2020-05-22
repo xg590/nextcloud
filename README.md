@@ -65,7 +65,12 @@ During the test, username and passwd in configuration files are default values. 
   "adminlogin"    => "admin_name",                
   "adminpass"     => "admin_passwd", 
 ``` 
-5. Start services (It may take mins) 启动社交平台
+5. Before starting with personalized configuration. Old cache should be destroyed. 
+```
+  docker image  rm nextcloud-master_nextcloud
+  docker volume rm nextcloud-master_config_vol nextcloud-master_data_vol nextcloud-master_db_vol
+```
+6. Start the service (nextcloud image will be rebuilt) 启动社交平台
 ```
   docker-compose up
 ``` 
