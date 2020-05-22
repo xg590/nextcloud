@@ -7,7 +7,7 @@
 * 此例中，仅需改动几个相关的配置文件，容器就能产生于服务器上，提供给用户Nextcloud这个社交工具。
 ## Highlights 
 * Few steps and deploy in minutes
-* Maximum customization: public file sharing (https://my_domain_name/file) and private cloud (https://my_domain_name/cloud) at the same time. 
+* Maximum customization: public file sharing (https://Here_should_be_your_domain_name/file) and private cloud (https://Here_should_be_your_domain_name/cloud) at the same time. 
 ## Plan
 1. Using official image of MariaDB
 2. Build a personalized image, in which the apache2 and php are installed. 
