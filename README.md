@@ -126,4 +126,6 @@ docker exec --user www-data nextcloud sh -c "export OC_PASS=newpassword; php /va
 The app is called Talk in Nextcloud GUI but Spreed in OCC
 ```
 docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:install spreed"
+docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:enable spreed"
 ```
+Dismiss this warning "PHP Fatal error: Cannot declare class OCA\Talk\Migration\Version2000Date20170707093535, ... ..."
