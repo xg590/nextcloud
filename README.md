@@ -1,6 +1,6 @@
 # Dockerize/容器化 Nextcloud
 ## Chinese Summary/中文概述
-* Nextcloud是一个云应用平台，本身具有文件共享功能，同时可以通过插件进行视频，语音，文字交流，因此可以将之变为社交工具。 
+* Nextcloud是一个云应用平台，本身具有文件共享功能，同时可以通过插件(talk aka. spreed)进行视频，语音，文字交流，因此可以将之变为社交工具。 
 * Nextcloud强制要求使用SSL加密消息，因此要求<b>参与部署的服务器本身必须拥有域名</b>。
 * 本文描述将Nextcloud容器化的过程。
 * 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中。
@@ -122,7 +122,7 @@ docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ use
 ```
 docker exec --user www-data nextcloud sh -c "export OC_PASS=newpassword; php /var/www/html/nextcloud/occ user:add --password-from-env  --display-name=\"Fred Jones\" --group=\"users\" fred"
 ``` 
-#### Install talking app 
+### Install talk
 The app is called Talk in Nextcloud GUI but Spreed in OCC
 ```
 docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:install spreed"
