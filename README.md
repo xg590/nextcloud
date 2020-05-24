@@ -113,10 +113,17 @@ Anticipated Outcome
   </data>
 </ocs>
 ```
-### Refresh Nextcloud and a fresh Nextcloud is born
-Remove containers and volumes
+### Administration with [Nextcloud Console](https://docs.nextcloud.com/server/18/admin_manual/configuration_server/occ_command.html)
+#### Latest login timestamp
 ```
-$ docker-compose rm -v -s -f
-$ docker volume ls
-$ docker volume prune -f
+docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ user:lastseen <username>" 
+```
+#### Add new user
+```
+docker exec --user www-data nextcloud sh -c "export OC_PASS=newpassword; php /var/www/html/nextcloud/occ user:add --password-from-env  --display-name=\"Fred Jones\" --group=\"users\" fred"
 ``` 
+#### Install talking app 
+The app is called Talk in Nextcloud GUI but Spreed in OCC
+```
+docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:install spreed"
+```
