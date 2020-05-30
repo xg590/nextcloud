@@ -93,7 +93,7 @@ docker image prune -f
 docker volume prune -f
 ```
 ### Administration with [Provisional API](https://docs.nextcloud.com/server/stable/admin_manual/configuration_user/user_provisioning_api.html)
-#### Create User 编程创建用户
+#### Create User/新增用户
 ```
 import requests
 url     = 'https://personal_domain/ocs/v1.php/cloud/users'
@@ -125,11 +125,11 @@ Anticipated Outcome
 ```
 docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ user:lastseen <username>" 
 ```
-#### Add new user
+#### Add new user/新增用户 
 ```
 docker exec --user www-data nextcloud sh -c "export OC_PASS=newpassword; php /var/www/html/nextcloud/occ user:add --password-from-env  --display-name=\"Fred Jones\" --group=\"users\" fred"
 ``` 
-### Install talk
+### Install talk/安装talk插件，应用商店里下载nextcloud talk进行聊天
 The app is called Talk in Nextcloud GUI but Spreed in OCC
 ```
 docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:install spreed"
