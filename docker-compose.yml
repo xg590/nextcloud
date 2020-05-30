@@ -29,12 +29,14 @@ services:
       - /etc/letsencrypt/live/Here_should_be_your_domain_name/privkey.pem:/ssl/privkey.pem:ro  
       - /etc/letsencrypt/live/Here_should_be_your_domain_name/fullchain.pem:/ssl/fullchain.pem:ro 
       - data_vol:/var/www/html/nextcloud/data 
+      - config_vol:/var/www/html/nextcloud/config
     networks:
       - intranet
         
 volumes:
   db_vol:   
-  data_vol: 
+  data_vol:
+  config_vol:
   
 networks:
   intranet: 
