@@ -129,8 +129,9 @@ docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ use
 ```
 docker exec --user www-data nextcloud sh -c "export OC_PASS=newpassword; php /var/www/html/nextcloud/occ user:add --password-from-env  --display-name=\"Fred Jones\" --group=\"users\" fred"
 ``` 
-### Install talk/安装talk插件，应用商店里下载nextcloud talk进行聊天
-The app is called Talk in Nextcloud GUI but Spreed in OCC
+### Install talk
+The app is called Talk in Nextcloud GUI but Spreed in OCC<br>
+安装talk插件，应用商店里下载nextcloud talk进行聊天
 ```
 docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:install spreed"
 docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:enable spreed"
