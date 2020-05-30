@@ -28,8 +28,7 @@ services:
       - /root/file:/var/www/html/file:ro
       - /etc/letsencrypt/live/Here_should_be_your_domain_name/privkey.pem:/ssl/privkey.pem:ro  
       - /etc/letsencrypt/live/Here_should_be_your_domain_name/fullchain.pem:/ssl/fullchain.pem:ro 
-      - data_vol:/var/www/html/nextcloud/data
-      - config_vol:/var/www/html/nextcloud/config
+      - data_vol:/var/www/html/nextcloud/data 
     networks:
       - intranet
         
