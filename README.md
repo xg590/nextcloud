@@ -16,7 +16,7 @@
 * [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) a ssl certificate from <i>Let's Encrypt</i> 拿一个免费SSL证书<br>
 * A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
 ## Test this repository 
-Run following commands，voila, the Nextcloud would be online. The only caveat is about <i>sed</i>. 运行下面几行命令，Nextcloud就能使用了。 
+Run following commands, voila, the Nextcloud would be online. The only caveat is about <i>sed</i>. 运行下面几行命令，Nextcloud就能使用了。 
 ```
 sudo su
 wget https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 -O docker-compose
@@ -29,6 +29,13 @@ sed -i 's/Here_should_be_your_domain_name/your_domain_name/g' docker-compose.yml
 apt update && apt install -y docker.io && docker-compose up
 ```
 If anything goes wrong, there should be some mistakes in configuration file. See Formal deployment for mistake-hidden lines. 
+## Clean docker before formal deployment
+```
+docker container stop db_container nextcloud
+docker container prune -f
+docker image  rm nextcloud-master_nextcloud
+docker volume rm nextcloud-master_config_vol nextcloud-master_data_vol nextcloud-master_db_vol
+```
 ## Formal deployment
 During the test, username and passwd in configuration files are default values. Now they should be personalized. 
 1. Edit ./docker-compose.yml 修改环境变量，修改证书和密钥路径，把想分享的文件夹添上，把自动配置文件放进容器
