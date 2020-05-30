@@ -34,8 +34,7 @@ services:
         
 volumes:
   db_vol:   
-  data_vol:
-  config_vol:
+  data_vol: 
   
 networks:
   intranet: 
