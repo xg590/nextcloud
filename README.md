@@ -29,7 +29,7 @@ sed -i 's/Here_should_be_your_domain_name/your_domain_name/g' docker-compose.yml
 apt update && apt install -y docker.io && docker-compose up
 ```
 If anything goes wrong, there should be some mistakes in configuration file. See Formal deployment for mistake-hidden lines. 
-## Clean docker before formal deployment
+## Clean testing debris before formal deployment
 ```
 docker container stop db_container nextcloud
 docker container prune -f
