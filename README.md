@@ -2,7 +2,7 @@
 ## Chinese Summary/中文概述
 * Nextcloud是一个云应用平台，本身具有文件共享功能，同时可以通过插件[talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)进行视频，语音，文字交流，因此可以将之变为社交工具。 
 * Nextcloud强制要求使用SSL加密消息，因此要求<b>参与部署的服务器本身必须拥有域名</b>。
-* 本文描述将Nextcloud容器化的过程。
+* 本文描述利用容器提供Nextcloud服务的过程，容器让。
 * 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中。
 * 此例中，仅需改动几个相关的配置文件，容器就能产生于服务器上，提供给用户Nextcloud这个社交工具。
 ## Highlights 
@@ -15,6 +15,27 @@
 ## Prerequisite: 
 * [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) a ssl certificate from <i>Let's Encrypt</i> 拿一个免费SSL证书<br>
 * A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
+
+6. Automatic installation of nextcloud 
+   * After [docker-compose](https://github.com/xg590/tutorials/blob/master/docker/setup.md) and [SSL certificate](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) are setted up, installation of nextcloud is hassle-free.
+```
+    sudo su
+    # Uncomment this if you are going to use privileged port (port_num < 1024) during test
+    # /sbin/sysctl -w net.ipv4.ip_unprivileged_port_start=443 # One-time test
+    # echo 'net.ipv4.ip_unprivileged_port_start=0' > /etc/sysctl.d/50-unprivileged-ports.conf && sysctl --system # permanent setting
+    username=ceshifornc
+    adduser $username
+    usermod -aG docker $username
+    usermod -aG sudo $username
+    su - $username
+    wget https://raw.githubusercontent.com/xg590/tutorials/master/docker/automatic_installation_of_nextcloud.sh
+    bash automatic_installation_of_nextcloud.sh
+```
+   * Clean after 
+```
+   sudo su
+   deluser --remove-home ceshifornc 
+```
 ## Test this repository 
 Run following commands, voila, the Nextcloud would be online. The only caveat is about <i>sed</i>. 运行下面几行命令，Nextcloud就能使用了。 
 ```
