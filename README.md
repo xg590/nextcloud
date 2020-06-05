@@ -62,7 +62,7 @@ docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ app:inst
 docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ app:enable spreed"
 ```
 Dismiss this warning "PHP Fatal error: Cannot declare class OCA\Talk\Migration\Version2000Date20170707093535, ... ..."
-#### Transfer ownership of files/folder
+#### Transfer ownership of other's files/folder
 ```
 docker exec --user www-data nextcloud sh -c 'php /var/www/nextcloud/occ files:transfer-ownership --path="Video" old_owner new_owner'
 ```
