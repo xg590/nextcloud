@@ -1,45 +1,31 @@
 #!/bin/bash
+# Creating a non-root user
+echo "We are going to create a new non-root user..."
+read -e -p 'What name would you like: ' -i "johndoe" non_root_username
+adduser $non_root_username
+usermod -aG docker $non_root_username
+usermod -aG sudo $non_root_username
 # Customized Envs
-read -p 'Domain name of this server: ' domain_name
-read -e -p 'Port to serve nextcloud: ' -i "443" port
-read -e -p 'nextcloud directory you want on host machine: ' -i "$(pwd)/nextcloud" nextcloud_dir
-read -e -p 'SSL certificate on host machine: ' -i "/etc/letsencrypt/live/$domain_name/fullchain.pem" cert
-read -e -p 'SSL private key on host machine: ' -i "/etc/letsencrypt/live/$domain_name/privkey.pem" key
+read    -p "Domain name of this server: " domain_name
+read -e -p "Port to serve nextcloud: " -i "12345" port
+read -e -p "Nextcloud directory you want on host machine: " -i "$(pwd)/nextcloud" nextcloud_dir
+read -e -p "SSL certificate on host machine: " -i "/etc/letsencrypt/live/$domain_name/fullchain.pem" cert
+read -e -p "SSL private key on host machine: " -i "/etc/letsencrypt/live/$domain_name/privkey.pem" key
 
-# Randomized Envs 
-temp_dir=/tmp/$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 10 | head -n 1)
+# Randomized Envs
 mysql_root_password=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 mysql_dbname=$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 10 | head -n 1)
 mysql_dbuser=$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 10 | head -n 1)
 mysql_dbpass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 nextcloud_admin_username=$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 10 | head -n 1)
 nextcloud_admin_passwd=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-# Nextcloud
-mkdir $temp_dir $nextcloud_dir
-chmod 777 $temp_dir
-wget --directory-prefix=$temp_dir https://download.nextcloud.com/server/releases/latest.tar.bz2 >/dev/null 2>&1
-sudo -u www-data tar jxf $temp_dir/latest.tar.bz2 -C $temp_dir
-# auto-configuration 
-cat << EOF > $temp_dir/autoconfig.php
-<?php
-\$AUTOCONFIG = array(
-  "dbtype"        => "mysql",
-  "dbname"        => "$mysql_dbname",
-  "dbuser"        => "$mysql_dbuser",
-  "dbpass"        => "$mysql_dbpass",
-  "dbhost"        => "db:3306",
-  "dbtableprefix" => "",
-  "adminlogin"    => "$nextcloud_admin_username",
-  "adminpass"     => "$nextcloud_admin_passwd",
-  "directory"     => "/var/www/html/data",
-);
-EOF
-sudo -u www-data cp $temp_dir/autoconfig.php $temp_dir/nextcloud/config/autoconfig.php
-sudo mv $temp_dir/nextcloud $nextcloud_dir/html
-# apache2
-mkdir $nextcloud_dir/apache2
-sudo cp --dereference $cert $key $nextcloud_dir/apache2
-cat << EOF > $nextcloud_dir/apache2/000-default.conf
+
+mkdir -p $nextcloud_dir/data
+chown www-data:www-data $nextcloud_dir/data
+su - $non_root_username
+mkdir -p $nextcloud_dir/app 
+# docker-compose directory
+cat << EOF > $nextcloud_dir/app/000-default.conf
 <VirtualHost *:443>
 	ServerName $domain_name
 	DocumentRoot /var/www/html
@@ -55,8 +41,8 @@ cat << EOF > $nextcloud_dir/apache2/000-default.conf
     ErrorLog  \${APACHE_LOG_DIR}/error.log
     CustomLog \${APACHE_LOG_DIR}/access.log combined
 	# SSL ------------------------------------
-    SSLCertificateFile      /ssl/fullchain.pem
-    SSLCertificateKeyFile   /ssl/privkey.pem
+    SSLCertificateFile      /var/www/letsencrypt/fullchain.pem
+    SSLCertificateKeyFile   /var/www/letsencrypt/privkey.pem
     # --------------------------------------
     # This file (/etc/letsencrypt/options-ssl-apache.conf) contains important security parameters.
 	# If you modify this file manually, Certbot will be unable to automatically provide future
@@ -72,8 +58,24 @@ cat << EOF > $nextcloud_dir/apache2/000-default.conf
     # -----------------------
 </VirtualHost>
 EOF
+
+cat << EOF > $nextcloud_dir/app/autoconfig.php
+<?php
+\$AUTOCONFIG = array(
+  "dbtype"        => "mysql",
+  "dbname"        => "$mysql_dbname",
+  "dbuser"        => "$mysql_dbuser",
+  "dbpass"        => "$mysql_dbpass",
+  "dbhost"        => "db:3306",
+  "dbtableprefix" => "",
+  "adminlogin"    => "$nextcloud_admin_username",
+  "adminpass"     => "$nextcloud_admin_passwd",
+  "directory"     => "/var/www/html/data",
+);
+EOF
+
 # Dockerfile
-cat << EOF > $nextcloud_dir/apache2/Dockerfile
+cat << EOF > $nextcloud_dir/app/Dockerfile
 FROM ubuntu:latest
 ENV TZ=Europe/Amsterdam
 # America/New_York
@@ -90,19 +92,28 @@ RUN apt install -y apache2 wget \
                    php-mbstring \
                    libapache2-mod-php
 RUN rm -rf /var/lib/apt/lists/*
+RUN chown www-data:www-data /var/www
 RUN a2enmod ssl
 COPY 000-default.conf /etc/apache2/sites-enabled/000-default.conf
-RUN mkdir -p /var/www/html/
-RUN chown www-data:www-data /var/www/html/
+USER www-data
+WORKDIR /var/www/
+RUN  mkdir -p   /var/www/letsencrypt/
+COPY $cert $key /var/www/letsencrypt/
+RUN  mkdir -p   /var/www/nextcloud/data 
+RUN wget https://download.nextcloud.com/server/releases/latest.tar.bz2 >/dev/null 2>&1
+RUN tar jxvf latest.tar.bz2 -C /var/www/
+RUN rm latest.tar.bz2 
+COPY autoconfig.php /var/www/nextcloud/config/autoconfig.php
+USER root
 CMD ["apachectl", "-D", "FOREGROUND"]
 EOF
+
 # docker-compose
 cat << EOF > $nextcloud_dir/docker-compose.yml
 version: '3'
 
 services:
-  db:
-    container_name: mariadb
+  db: 
     image: mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: always
@@ -116,16 +127,13 @@ services:
     networks:
       - intranet
 
-  http:
-    container_name: apache2
-    build: ./apache2
+  app: 
+    build: ./app
     restart: always
     ports:
       - $port:443
-    volumes:
-      - $nextcloud_dir/apache2/${key##*/}:/ssl/privkey.pem:ro
-      - $nextcloud_dir/apache2/${cert##*/}:/ssl/fullchain.pem:ro
-      - $nextcloud_dir/html:/var/www/html
+    volumes: 
+      - $nextcloud_dir/data:/var/www/nextcloud/data 
     networks:
       - intranet
 
@@ -136,23 +144,23 @@ networks:
   intranet:
 
 EOF
-rm -rf $temp_dir 
+rm -rf $temp_dir
 cat << EOF > $nextcloud_dir/admin.info
 nextcloud_web : https://$domain_name:$port/
 Admin_username: $nextcloud_admin_username
-Admin_password: $nextcloud_admin_passwd 
+Admin_password: $nextcloud_admin_passwd
 EOF
 cat << EOF
 ---------------------------------
 
-    How to start nextcloud: 
-      cd $nextcloud_dir && docker-compose up 
-    Where to visit nextcloud: 
-      https://$domain_name:$port/ 
-    Administration account info: 
+    How to start nextcloud:
+      cd $nextcloud_dir && docker-compose up
+    Where to visit nextcloud:
+      https://$domain_name:$port/
+    Administration account info:
       Admin_username: $nextcloud_admin_username
-      Admin_password: $nextcloud_admin_passwd 
+      Admin_password: $nextcloud_admin_passwd
       These info are also stored in $nextcloud_dir/admin.info
-	  
+
 ---------------------------------
 EOF
