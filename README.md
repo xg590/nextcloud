@@ -74,7 +74,7 @@ Dismiss this warning "PHP Fatal error: Cannot declare class OCA\Talk\Migration\V
 docker exec --user www-data nextcloud sh -c 'php /var/www/nextcloud/occ files:transfer-ownership --path="Video" old_owner new_owner'
 ```
 #### Copy files on host machine to Nextcloud user in container
-Copy files on host machine to user's folder in container 
+Copy files 
 ```
 docker cp /directory_on_host_machine/. nextcloud_container_id:/var/www/nextcloud/data/USERNAME/files/Video/
 ```
