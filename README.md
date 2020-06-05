@@ -5,10 +5,9 @@
 * 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中。
 * 此例中，仅需运行命令并根据提示输入信息，Nextcloud就会部署于服务器上。  
 ## Prerequisite获得SSL证书是先决条件: 
-* [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) a ssl certificate from <i>Let's Encrypt</i> 拿一个免费SSL证书<br>
-* A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
+* [Get a SSL certificate](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) from <i>Let's Encrypt</i> 拿一个免费SSL证书: <br> A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
 * [Docker-compose](https://github.com/xg590/tutorials/blob/master/docker/setup.md) is also required.
-## Automatic installation of nextcloud  
+## Automatic installation of nextcloud自动安装
 ```
     sudo su
     # Uncomment this if you are going to use privileged port (port_num < 1024) during test
@@ -26,72 +25,6 @@
 ```
    sudo su
    deluser --remove-home ceshifornc 
-```
-## Test this repository 
-Run following commands, voila, the Nextcloud would be online. The only caveat is about <i>sed</i>. 运行下面几行命令，Nextcloud就能使用了。 
-```
-sudo su
-wget https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 -O docker-compose
-chmod 555 docker-compose
-mv docker-compose /usr/local/bin
-wget https://github.com/xg590/nextcloud/archive/master.zip
-unzip master.zip
-cd nextcloud-master/
-sed -i 's/Here_should_be_your_domain_name/your_domain_name/g' docker-compose.yml nextcloud/000-default.conf
-apt update && apt install -y docker.io && docker-compose up
-```
-If anything goes wrong, there should be some mistakes in configuration file. See Formal deployment for mistake-hidden lines. 
-## Clean testing debris before formal deployment
-```
-docker container stop db_container nextcloud
-docker container prune -f
-docker image  rm nextcloud-master_nextcloud
-docker volume rm nextcloud-master_config_vol nextcloud-master_data_vol nextcloud-master_db_vol
-```
-## Formal deployment
-During the test, username and passwd in configuration files are default values. Now they should be personalized. 
-1. Edit ./docker-compose.yml 修改环境变量，修改证书和密钥路径，把想分享的文件夹添上，把自动配置文件放进容器
-```
-  services:
-    db:
-      environment:
-        - MYSQL_ROOT_PASSWORD=123456
-        - MYSQL_DATABASE=dbname
-        - MYSQL_USER=username
-        - MYSQL_PASSWORD=passwd 
-    nextcloud:
-      volumes:
-      - /root/file:/var/www/html/file:ro 
-      - /etc/letsencrypt/live/your_domain_name/privkey.pem:/ssl/privkey.pem:ro  
-      - /etc/letsencrypt/live/your_domain_name/fullchain.pem:/ssl/fullchain.pem:ro 
-```
-2. Edit ./nextcloud/000-default.conf 把服务器域名在文件里指出来
-```
-  <VirtualHost *:443>
-  	ServerName your_domain_name
-  </VirtualHost>
-```
-3. Edit ./nextcloud/Dockerfile 依据服务器地址，改变时区设置
-```
-  # Change the Time Zone 
-  ENV TZ=Europe/Amsterdam 
-``` 
-4. Edit ./nextcloud/autoconfig.php (You need the following account info to manage the nextcloud) 自动部署文件，有了它，我们就能跳过nextcloud提示我们设置管理员密码的[页面](https://github.com/xg590/miscellaneous/blob/master/nextcloud_admin.png)
-```
-  "dbname"        => "dbname",
-  "dbuser"        => "username",
-  "dbpass"        => "passwd",
-  "adminlogin"    => "admin_name",                
-  "adminpass"     => "admin_passwd", 
-``` 
-5. Before starting with personalized configuration. Old cache should be destroyed. 
-```
-  docker image  rm nextcloud-master_nextcloud
-  docker volume rm nextcloud-master_config_vol nextcloud-master_data_vol nextcloud-master_db_vol
-```
-6. Start the service (nextcloud image will be rebuilt) 启动社交平台
-```
-  docker-compose up
 ``` 
 ## Useful docker command
 ```
