@@ -1,23 +1,14 @@
 # Dockerize/容器化 Nextcloud
 ## Chinese Summary/中文概述
-* Nextcloud是一个云应用平台，本身具有文件共享功能，同时可以通过插件[talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)进行视频，语音，文字交流，因此可以将之变为社交工具。 
-* Nextcloud强制要求使用SSL加密消息，因此要求<b>参与部署的服务器本身必须拥有域名</b>。
-* 本文描述利用容器提供Nextcloud服务的过程，容器让。
+* Nextcloud是一个文件云，但通过安装插件[talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)可以进行视频通话和文字聊天。 
+* Nextcloud强制要求使用SSL加密链接，因此<h3>要求参与部署的服务器本身必须拥有域名。</h3> 
 * 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中。
-* 此例中，仅需改动几个相关的配置文件，容器就能产生于服务器上，提供给用户Nextcloud这个社交工具。
-## Highlights 
-* Few steps and deploy in minutes
-* Maximum customization: public file sharing (https://Here_should_be_your_domain_name/file) and private cloud (https://Here_should_be_your_domain_name/cloud) at the same time. 
-## Plan
-1. Using official image of MariaDB
-2. Build a personalized image, in which the apache2 and php are installed. 
-3. In the same image, nextcloud is placed in /var/www/html/nextcloud while pulic files are in /var/www/html/file
-## Prerequisite: 
+* 此例中，仅需运行命令并根据提示输入信息，Nextcloud就会部署于服务器上。  
+## Prerequisite获得SSL证书是先决条件: 
 * [Get](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) a ssl certificate from <i>Let's Encrypt</i> 拿一个免费SSL证书<br>
 * A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
-
-6. Automatic installation of nextcloud 
-   * After [docker-compose](https://github.com/xg590/tutorials/blob/master/docker/setup.md) and [SSL certificate](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) are setted up, installation of nextcloud is hassle-free.
+* [Docker-compose](https://github.com/xg590/tutorials/blob/master/docker/setup.md) is also required.
+## Automatic installation of nextcloud  
 ```
     sudo su
     # Uncomment this if you are going to use privileged port (port_num < 1024) during test
