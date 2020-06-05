@@ -1,51 +1,50 @@
 #!/bin/bash
-# Creating a non-root user
-echo "We are going to create a new non-root user..."
-read -e -p 'What name would you like: ' -i "johndoe" non_root_username
-adduser $non_root_username
-usermod -aG docker $non_root_username
-usermod -aG sudo $non_root_username
-# Customized Envs
-read    -p "Domain name of this server: " domain_name
-read -e -p "Port to serve nextcloud: " -i "12345" port
-read -e -p "Nextcloud directory you want on host machine: " -i "$(pwd)/nextcloud" nextcloud_dir
-read -e -p "SSL certificate on host machine: " -i "/etc/letsencrypt/live/$domain_name/fullchain.pem" cert
-read -e -p "SSL private key on host machine: " -i "/etc/letsencrypt/live/$domain_name/privkey.pem" key
-
 # Randomized Envs
 mysql_root_password=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 mysql_dbname=$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 10 | head -n 1)
 mysql_dbuser=$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 10 | head -n 1)
 mysql_dbpass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-nextcloud_admin_username=$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 10 | head -n 1)
+nextcloud_admin_username=$(cat /dev/urandom | tr -dc 'a-z' | fold -w 3 | head -n 1)$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 7 | head -n 1)
 nextcloud_admin_passwd=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
-mkdir -p $nextcloud_dir/data
-chown www-data:www-data $nextcloud_dir/data
-su - $non_root_username
-mkdir -p $nextcloud_dir/app 
+# Creating a non-root user
+echo "We are going to create a new non-root user..."
+read -e -p "What name would you like: " -i "$nextcloud_admin_username" non_root_username
+echo "Suggested password: $nextcloud_admin_passwd"
+adduser $non_root_username
+usermod -aG docker $non_root_username
+
+# Customized Envs
+read -p "Domain name of this server: " domain_name
+read -e -p "Port to serve nextcloud: " -i "12345" port
+read -e -p "Nextcloud directory you want on host machine: " -i "/home/$non_root_username/nextcloud" nextcloud_dir
+read -e -p "SSL certificate on host machine: " -i "/etc/letsencrypt/live/$domain_name/fullchain.pem" cert
+read -e -p "SSL private key on host machine: " -i "/etc/letsencrypt/live/$domain_name/privkey.pem" key
+
+mkdir -p $nextcloud_dir/data $nextcloud_dir/app
+cp $cert $key $nextcloud_dir/app
 # docker-compose directory
 cat << EOF > $nextcloud_dir/app/000-default.conf
 <VirtualHost *:443>
-	ServerName $domain_name
-	DocumentRoot /var/www/html
-	<Directory /var/www/html/>
-		# See https://docs.nextcloud.com/server/18/admin_manual/installation/source_installation.html
-		Require all granted
-		AllowOverride All
-		Options FollowSymLinks MultiViews
-		<IfModule mod_dav.c>
-			Dav off
-		</IfModule>
-	</Directory>
+    ServerName $domain_name
+    DocumentRoot /var/www/nextcloud
+    <Directory /var/www/nextcloud/>
+        # See https://docs.nextcloud.com/server/18/admin_manual/installation/source_installation.html
+        Require all granted
+        AllowOverride All
+        Options FollowSymLinks MultiViews
+        <IfModule mod_dav.c>
+            Dav off
+        </IfModule>
+    </Directory>
     ErrorLog  \${APACHE_LOG_DIR}/error.log
     CustomLog \${APACHE_LOG_DIR}/access.log combined
-	# SSL ------------------------------------
-    SSLCertificateFile      /var/www/letsencrypt/fullchain.pem
-    SSLCertificateKeyFile   /var/www/letsencrypt/privkey.pem
+    # SSL ------------------------------------
+    SSLCertificateFile      /var/www/letsencrypt/${cert##*/}
+    SSLCertificateKeyFile   /var/www/letsencrypt/${key##*/}
     # --------------------------------------
     # This file (/etc/letsencrypt/options-ssl-apache.conf) contains important security parameters.
-	# If you modify this file manually, Certbot will be unable to automatically provide future
+    # If you modify this file manually, Certbot will be unable to automatically provide future
     # security updates. Instead, Certbot will print and log an error message with a path to
     # the up-to-date file that you will need to refer to when manually updating this file.
     SSLEngine on
@@ -70,7 +69,7 @@ cat << EOF > $nextcloud_dir/app/autoconfig.php
   "dbtableprefix" => "",
   "adminlogin"    => "$nextcloud_admin_username",
   "adminpass"     => "$nextcloud_admin_passwd",
-  "directory"     => "/var/www/html/data",
+  "directory"     => "/var/www/nextcloud/data",
 );
 EOF
 
@@ -92,18 +91,18 @@ RUN apt install -y apache2 wget \
                    php-mbstring \
                    libapache2-mod-php
 RUN rm -rf /var/lib/apt/lists/*
-RUN chown www-data:www-data /var/www
 RUN a2enmod ssl
 COPY 000-default.conf /etc/apache2/sites-enabled/000-default.conf
+RUN chown www-data:www-data /var/www
 USER www-data
-WORKDIR /var/www/
-RUN  mkdir -p   /var/www/letsencrypt/
-COPY $cert $key /var/www/letsencrypt/
-RUN  mkdir -p   /var/www/nextcloud/data 
+WORKDIR                     /var/www/
+RUN mkdir -p                /var/www/letsencrypt/
+COPY ${cert##*/} ${key##*/} /var/www/letsencrypt/
+RUN mkdir -p                /var/www/nextcloud/data
 RUN wget https://download.nextcloud.com/server/releases/latest.tar.bz2 >/dev/null 2>&1
 RUN tar jxvf latest.tar.bz2 -C /var/www/
-RUN rm latest.tar.bz2 
-COPY autoconfig.php /var/www/nextcloud/config/autoconfig.php
+RUN rm latest.tar.bz2
+COPY --chown=www-data:www-data autoconfig.php /var/www/nextcloud/config/autoconfig.php
 USER root
 CMD ["apachectl", "-D", "FOREGROUND"]
 EOF
@@ -113,7 +112,7 @@ cat << EOF > $nextcloud_dir/docker-compose.yml
 version: '3'
 
 services:
-  db: 
+  db:
     image: mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     restart: always
@@ -127,40 +126,60 @@ services:
     networks:
       - intranet
 
-  app: 
+  app:
+    depends_on:
+      - db
     build: ./app
     restart: always
     ports:
       - $port:443
-    volumes: 
-      - $nextcloud_dir/data:/var/www/nextcloud/data 
+    volumes:
+      - $nextcloud_dir/data:/var/www/nextcloud/data
+      - config_vol:/var/www/nextcloud/config
     networks:
       - intranet
 
 volumes:
   db_vol:
+  config_vol:
 
 networks:
   intranet:
 
 EOF
-rm -rf $temp_dir
+
 cat << EOF > $nextcloud_dir/admin.info
-nextcloud_web : https://$domain_name:$port/
-Admin_username: $nextcloud_admin_username
-Admin_password: $nextcloud_admin_passwd
+How to start nextcloud:
+  su $non_root_username
+  cd $nextcloud_dir && docker-compose up
+If a privileged port is preferred:
+  iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port $port
+  iptables -t nat -I OUTPUT -p tcp -d 127.0.0.1 --dport 443 -j REDIRECT --to-ports $port
+Where to visit nextcloud:
+  https://$domain_name:$port/
+Administration account info:
+  Admin_username: $nextcloud_admin_username
+  Admin_password: $nextcloud_admin_passwd
 EOF
+
+chown -R $non_root_username:$non_root_username $nextcloud_dir
+chown www-data:www-data $nextcloud_dir/data
+
 cat << EOF
 ---------------------------------
 
     How to start nextcloud:
+      su $non_root_username
       cd $nextcloud_dir && docker-compose up
+    If a privileged port is preferred:
+      iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port $port
+      iptables -t nat -I OUTPUT -p tcp -d 127.0.0.1 --dport 443 -j REDIRECT --to-ports $port
     Where to visit nextcloud:
       https://$domain_name:$port/
     Administration account info:
       Admin_username: $nextcloud_admin_username
       Admin_password: $nextcloud_admin_passwd
-      These info are also stored in $nextcloud_dir/admin.info
+    These info are also stored in $nextcloud_dir/admin.info
 
 ---------------------------------
 EOF
