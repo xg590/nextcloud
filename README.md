@@ -7,24 +7,10 @@
 ## Prerequisite获得SSL证书是先决条件: 
 * [Get a SSL certificate](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) from <i>Let's Encrypt</i> 拿一个免费SSL证书: <br> A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
 * [Docker-compose](https://github.com/xg590/tutorials/blob/master/docker/setup.md) is also required.
-## Automatic installation of nextcloud自动安装
+## Automatic installation of nextcloud自动安装 
 ```
-    sudo su
-    # Uncomment this if you are going to use privileged port (port_num < 1024) during test
-    # /sbin/sysctl -w net.ipv4.ip_unprivileged_port_start=443 # One-time test
-    # echo 'net.ipv4.ip_unprivileged_port_start=0' > /etc/sysctl.d/50-unprivileged-ports.conf && sysctl --system # permanent setting
-    username=ceshifornc
-    adduser $username
-    usermod -aG docker $username
-    usermod -aG sudo $username
-    su - $username
-    wget https://raw.githubusercontent.com/xg590/tutorials/master/docker/automatic_installation_of_nextcloud.sh
-    bash automatic_installation_of_nextcloud.sh
-```
-   * Clean after 
-```
-   sudo su
-   deluser --remove-home ceshifornc 
+wget https://raw.githubusercontent.com/xg590/nextcloud/master/automatic_installation_of_nextcloud.sh
+bash automatic_installation_of_nextcloud.sh
 ``` 
 ## Useful docker command
 ```
