@@ -16,7 +16,7 @@ Yes, that's it. 安装完成
 ## Useful docker command
 ```
 docker ps
-docker exec container_name sh -c "ls -l /var/www/html"
+docker exec container_name sh -c "ls -l /var/www/"
 docker-compose down
 docker container ls -f 'status=exited'
 docker container prune -f
@@ -55,21 +55,30 @@ Anticipated Outcome
 ### Administration with [Nextcloud Console](https://docs.nextcloud.com/server/18/admin_manual/configuration_server/occ_command.html)
 #### Latest login timestamp
 ```
-docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ user:lastseen <username>" 
+docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ user:lastseen <username>" 
 ```
 #### Add new user/新增用户 
 ```
-docker exec --user www-data nextcloud sh -c "export OC_PASS=newpassword; php /var/www/html/nextcloud/occ user:add --password-from-env  --display-name=\"Fred Jones\" --group=\"users\" fred"
+docker exec --user www-data nextcloud sh -c "export OC_PASS=newpassword; php /var/www/nextcloud/occ user:add --password-from-env  --display-name=\"Fred Jones\" --group=\"users\" fred"
 ``` 
 #### Install talk
 The app is called Talk in Nextcloud GUI but Spreed in OCC<br>
 安装talk插件，应用商店里下载nextcloud talk进行聊天
 ```
-docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:install spreed"
-docker exec --user www-data nextcloud sh -c "php /var/www/html/nextcloud/occ app:enable spreed"
+docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ app:install spreed"
+docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ app:enable spreed"
 ```
 Dismiss this warning "PHP Fatal error: Cannot declare class OCA\Talk\Migration\Version2000Date20170707093535, ... ..."
-#### Transfer Ownership of Files/Folder
+#### Transfer ownership of files/folder
 ```
-docker exec --user www-data nextcloud sh -c 'php /var/www/html/nextcloud/occ files:transfer-ownership --path="Video" old_owner new_owner'
+docker exec --user www-data nextcloud sh -c 'php /var/www/nextcloud/occ files:transfer-ownership --path="Video" old_owner new_owner'
+```
+#### Copy files on host machine to Nextcloud user in container
+Copy files on host machine to user's folder in container 
+```
+docker cp /directory_on_host_machine/. nextcloud_container_id:/var/www/nextcloud/data/USERNAME/files/Video/
+```
+Scan files
+```
+docker exec --user www-data nextcloud_container_id sh -c 'php /var/www/nextcloud/occ files:scan USERNAME'
 ```
