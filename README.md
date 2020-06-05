@@ -12,6 +12,7 @@
 wget https://raw.githubusercontent.com/xg590/nextcloud/master/automatic_installation_of_nextcloud.sh
 bash automatic_installation_of_nextcloud.sh
 ``` 
+Yes, that's it. 安装完成
 ## Useful docker command
 ```
 docker ps
