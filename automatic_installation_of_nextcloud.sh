@@ -127,6 +127,7 @@ services:
       - intranet
 
   app:
+    container_name: nextcloud
     depends_on:
       - db
     build: ./app
