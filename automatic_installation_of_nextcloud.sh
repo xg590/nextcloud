@@ -154,8 +154,7 @@ How to start nextcloud:
   su $non_root_username
   cd $nextcloud_dir && docker-compose up
 If a privileged port is preferred:
-  iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port $port
-  iptables -t nat -I OUTPUT -p tcp -d 127.0.0.1 --dport 443 -j REDIRECT --to-ports $port
+  iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port $port 
 Where to visit nextcloud:
   https://$domain_name:$port/
 Administration account info:
@@ -173,8 +172,7 @@ cat << EOF
       su $non_root_username
       cd $nextcloud_dir && docker-compose up
     If a privileged port is preferred:
-      iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port $port
-      iptables -t nat -I OUTPUT -p tcp -d 127.0.0.1 --dport 443 -j REDIRECT --to-ports $port
+      iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port $port 
     Where to visit nextcloud:
       https://$domain_name:$port/
     Administration account info:
