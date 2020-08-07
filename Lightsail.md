@@ -1,4 +1,5 @@
 ### Let's deploy a Nextcloud in an Amazon Lightsail Instance
+Summary: Buy computational power from Amazon (Lightsail Instance) --> Attach static IP to the instance --> Buy domain and manage the DNS records --> Get SSL certificate --> Automatic Installtion of Nextcloud --> Install Nextcloud Talk
 1. [Create](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/how-to-create-amazon-lightsail-instance-virtual-private-server-vps) an Amazon Lightsail instance (1GB memory at least)
 2. [Create](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-create-static-ip) a static IP and attach it to an instance in Amazon Lightsail
 3. I bought a domain from [Google Domain](https://domains.google/) but decide to [transfer](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-how-to-create-dns-entry) (see Step 2) the management of its DNS records to Lightsail (, then Amazon will provide DNS service). You should buy a domain form Google/Amazon/Godaddy or ... if you have none.
