@@ -65,16 +65,16 @@ Dismiss this warning "PHP Fatal error: Cannot declare class OCA\Talk\Migration\V
 #### Install talk for Nextcloud 19 @ Jun 06 2020
 Since talk is not pre-installed with Nextcloud 19.0.0, we need download it from [app store](https://apps.nextcloud.com/apps/spreed) and install it manually.
 ```
-wget --directory-prefix=/tmp https://github.com/nextcloud/spreed/releases/download/v9.0.0/spreed-9.0.0.tar.gz
-sudo -u www-data tar zxvf /tmp/spreed-9.0.0.tar.gz -C /tmp 
+wget -O /tmp/spreed.tgz https://github.com/nextcloud/spreed/releases/download/v9.0.3/spreed-9.0.3.tar.gz 
+sudo -u www-data tar zxvf /tmp/spreed.tgz -C /tmp 
+sudo mv /tmp/spreed /somewhere
 ```
 Now mount spreed directory to container, just like what was done to data directory: Edit docker-compose.yml
 ```
 services: 
   app: 
-    volumes:
-      - /home/USERNAME/NEXTCLOUD_DIR/data:/var/www/nextcloud/data
-      - /tmp/spreed:/var/www/nextcloud/apps/spreed
+    volumes: 
+      - /somewhere/spreed:/var/www/nextcloud/apps/spreed
 ```
 Enable it
 ```
