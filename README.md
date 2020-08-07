@@ -17,6 +17,7 @@
 * [Here](https://github.com/xg590/nextcloud/blob/master/Lightsail.md) is the walk-through. 
 ## Automatic installation of nextcloud自动安装 
 ```
+sudo su
 wget https://raw.githubusercontent.com/xg590/nextcloud/master/automatic_installation_of_nextcloud.sh
 bash automatic_installation_of_nextcloud.sh
 ``` 
