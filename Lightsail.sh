@@ -1,6 +1,6 @@
 #!/bin/bash
-domain_name=$1
-email=$2
+domain_name=$1 # Change this to your domain name
+email=$2       # Provide Email to Electronic Frontier Foundation
 
 # Random Variables
 mysql_dbname=$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 10 | head -n 1)
