@@ -67,7 +67,7 @@ FLUSH PRIVILEGES;
 EOF
 
 # Document Some Sensitive Info
-cat << EOF > nextcloud_admin.info
+cat << EOF > /root/nextcloud_admin.info
 MySQL Database Info:
   dbname    : $mysql_dbname
   dbuser    : $mysql_dbuser
