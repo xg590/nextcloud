@@ -11,7 +11,7 @@ Summary: Buy computational power (<i>Lightsail Instance</i>) from Amazon --> Att
 wget https://raw.githubusercontent.com/xg590/nextcloud/master/Lightsail.sh 
 sudo bash Lightsail.sh www.yourdomain.com youremail@gmail.com
 ```
-6. Enable the <i>Nextcloud Talk<i>
+6. Enable the <i>Nextcloud Talk</i>
 * From the Nextcloud console main page, click the Settings icon on the upper-right side of the navigation bar. Choose + Apps and then find talk and enable it. 
   
   
