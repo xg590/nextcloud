@@ -1,5 +1,5 @@
 # Lightsail/使用亚马逊云服务器
-* Deployed Nextcloud on an Amazon Lightsail Instance without using Docker.
+* Deploy the Nextcloud on an Amazon Lightsail Instance without using Docker.
 * [Here](https://github.com/xg590/nextcloud/blob/master/Lightsail.md) is the walk-through. 
 # Dockerize/容器化 Nextcloud
 ## 中文概述
