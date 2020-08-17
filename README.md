@@ -1,3 +1,6 @@
+# Lightsail/使用亚马逊云服务器
+* Deployed Nextcloud on an Amazon Lightsail Instance without using Docker.
+* [Here](https://github.com/xg590/nextcloud/blob/master/Lightsail.md) is the walk-through. 
 # Dockerize/容器化 Nextcloud
 ## 中文概述
 * Nextcloud是一个文件云，但通过安装插件[talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)可以进行视频通话和文字聊天。 
@@ -11,10 +14,6 @@
 ## Prerequisite/先决条件  
 * [Get a free SSL certificate](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) from <i>Let's Encrypt</i> 拿一个免费SSL证书: <br> A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
 * [Docker-compose](https://github.com/xg590/tutorials/blob/master/docker/setup.md) is also required.
-## Lightsail/使用亚马逊云服务器
-* Build from scratch.
-* In the end, Nextcloud is deployed on an Amazon Lightsail Instance.
-* [Here](https://github.com/xg590/nextcloud/blob/master/Lightsail.md) is the walk-through. 
 ## Automatic installation of nextcloud自动安装 
 ```
 sudo su
