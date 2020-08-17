@@ -3,11 +3,12 @@ Summary: Buy computational power (<i>Lightsail Instance</i>) from Amazon --> Att
 1. [Create](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/how-to-create-amazon-lightsail-instance-virtual-private-server-vps) an Amazon Lightsail instance (1GB memory at least)
 2. [Create](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-create-static-ip) a static IP and attach it to an instance in Amazon Lightsail
 3. I bought a domain from [Google Domain](https://domains.google/) but decide to [transfer](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-how-to-create-dns-entry) (see Step 2) the management of its DNS records to Lightsail (, then Amazon will provide DNS service). You should buy a domain form Google/Amazon/Godaddy or ... if you have none.
-4. [Add](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/understanding-firewall-and-port-mappings-in-amazon-lightsail) a new firewall rule to allow the access of Nextcloud service.  
+4. [Add](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/understanding-firewall-and-port-mappings-in-amazon-lightsail) a new firewall rule "<b>Application HTTPS</b>" to allow the access of Nextcloud service.  
 5. Automatic Installation
+* Connect securely using your browser -- Click the orange button "Connect using SSH"  
+* CUSTOM www.yourdomain.com youremail@gmail.com accordingly!!!
 ```shell
-# In order to get SSL certificate, you must provide the domain name of this server and your email to the Electronic Frontier Foundation
-wget https://raw.githubusercontent.com/xg590/nextcloud/master/Lightsail.sh && bash Lightsail.sh www.yourdomain.com youremail@gmail.com
+wget https://raw.githubusercontent.com/xg590/nextcloud/master/Lightsail.sh && sudo bash Lightsail.sh www.yourdomain.com youremail@gmail.com
 ```
 6. Enable the <i>Nextcloud Talk<i>
 * From the Nextcloud console main page, click the Settings icon on the upper-right side of the navigation bar. Choose + Apps and then find talk and enable it. 
