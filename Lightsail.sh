@@ -28,7 +28,7 @@ certbot --apache --agree-tos --non-interactive --email $email -d $domain_name
 # Install Nextcloud
 nextcloud_dir=/var/www/nextcloud
 sed  -i "s|DocumentRoot /var/www/html|DocumentRoot $nextcloud_dir|g" /etc/apache2/sites-enabled/000-default-le-ssl.conf
-wget -O nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/latest.tar.bz2
+wget -O nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/nextcloud-19.0.1.tar.bz2
 tar jxf nextcloud.tar.bz2 -C /var/www/
 wget -O spreed.tgz https://github.com/nextcloud/spreed/releases/download/v9.0.3/spreed-9.0.3.tar.gz
 tar zxf spreed.tgz -C $nextcloud_dir/apps
