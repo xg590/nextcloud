@@ -64,7 +64,7 @@ MySQL Database Info:
   dbuser    : $mysql_dbuser
   dbpassword: $mysql_dbpass
 Nextcloud Administrator Account Info:
-  Admin_username, Admin_password = $nextcloud_admin_username, $nextcloud_admin_passwd
+  Admin_username, Admin_password = '$nextcloud_admin_username', '$nextcloud_admin_passwd'
 Where to visit nextcloud:
   https://$domain_name
 EOF
