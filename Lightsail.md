@@ -1,7 +1,7 @@
 ### Let's deploy a Nextcloud in an Amazon Lightsail Instance 
 1. [Create AWS Account and Access Keys](https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html)
 2. Bought a domain from [Google Domain](https://domains.google/)
-3. Run [Jupyter_notebook](https://github.com/xg590/tutorials/blob/master/Create_LightSail_Instance.ipynb) to create Amazon Lightsail Instance
+3. Run [Jupyter_notebook](https://github.com/xg590/nextcloud/blob/master/Create_LightSail_Instance.ipynb) to create Amazon Lightsail Instance
 4. [Manage google domain name servers](https://support.google.com/domains/answer/3290309) 
 5. Automatic Installation
 ```shell
