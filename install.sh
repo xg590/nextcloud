@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ $# -ne 2 ] ; then
+    echo ./install.sh your_domain_name your_email
+    exit 0
+fi 
+
 domain_name=$1 # Change this to your domain name
 email=$2       # Provide Email to Electronic Frontier Foundation
 
