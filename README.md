@@ -5,7 +5,7 @@
 * Nextcloud强制要求使用SSL加密链接，因此<h3>要求参与部署的服务器本身必须拥有域名。</h3> 
 ## Use a VPS with Domain Name/使用预先配置好域名的虚拟服务器
 ```shell
-# wget https://github.com/xg590/nextcloud/raw/master/install.sh && bash your_domain_name your_email
+root# wget https://github.com/xg590/nextcloud/raw/master/install.sh && bash your_domain_name your_email
 ```
 Then visit your_domain_name. The Nextcloud is there ready for you. Remember enable Nextcloud Talk if you want. / 安装完毕，可以访问你的域名使用Nextcloud了，别忘了打开Talk。 
 ## Use Lightsail/使用亚马逊云服务器
