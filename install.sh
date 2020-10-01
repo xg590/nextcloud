@@ -1,4 +1,6 @@
 #!/bin/bash
+### Tested on Ubuntu 20.04 Oct/01/2020
+### Composer: Xiaokang Guo (xg590@nyu.edu)
 if [ $# -ne 2 ] ; then
     echo ./install.sh your_domain_name your_email
     exit 0
@@ -26,16 +28,16 @@ apt update -y && apt install -y php-gd                 \
                                 php-mbstring           \
                                 mariadb-server         \
                                 libapache2-mod-php     \
-                                python-certbot-apache
+                                python3-certbot-apache
 # Get SSL certificate
 certbot --apache --agree-tos --non-interactive --email $email -d $domain_name
 
 # Install Nextcloud
 nextcloud_dir=/var/www/nextcloud
 sed  -i "s|DocumentRoot /var/www/html|DocumentRoot $nextcloud_dir|g" /etc/apache2/sites-enabled/000-default-le-ssl.conf
-wget -O nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/nextcloud-19.0.1.tar.bz2
+wget -O nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/nextcloud-19.0.3.tar.bz2
 tar jxf nextcloud.tar.bz2 -C /var/www/
-wget -O spreed.tgz https://github.com/nextcloud/spreed/releases/download/v9.0.3/spreed-9.0.3.tar.gz
+wget -O spreed.tgz https://github.com/nextcloud/spreed/releases/download/v9.0.4/spreed-9.0.4.tar.gz
 tar zxf spreed.tgz -C $nextcloud_dir/apps
 rm -rf /var/lib/apt/lists/* nextcloud.tar.bz2 spreed.tgz
 cat << EOF > $nextcloud_dir/config/autoconfig.php
