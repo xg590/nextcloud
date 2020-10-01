@@ -5,8 +5,8 @@
 4. [Manage google domain name servers](https://support.google.com/domains/answer/3290309) 
 5. Login the Instance and run the automatic installation script
 ```shell
-wget https://raw.githubusercontent.com/xg590/nextcloud/master/Lightsail.sh 
-sudo bash Lightsail.sh www.yourdomain.com youremail@gmail.com
+wget https://raw.githubusercontent.com/xg590/nextcloud/master/install.sh 
+sudo bash install.sh www.yourdomain.com youremail@gmail.com
 ```
 6. Enable the <i>Nextcloud Talk</i>
 7. From the Nextcloud console main page, click the Settings icon on the upper-right side of the navigation bar. Choose + Apps then find talk and enable it. 
