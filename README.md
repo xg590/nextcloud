@@ -1,29 +1,23 @@
-# Lightsail/使用亚马逊云服务器
-* Deploy the Nextcloud on an Amazon Lightsail Instance without using Docker.
-* [Here](https://github.com/xg590/nextcloud/blob/master/Lightsail.md) is the walk-through. 
-# Dockerize/容器化 Nextcloud
-## 中文概述
+# Overview
+* Nextcloud is basically a file-sharing platform, but it could be used to hold a video conferencing after enable a pre-installed app <i> [talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)</i>.
+* SSL is compulsory for the public server. A domain name shoud be linked to the server. 
 * Nextcloud是一个文件云，但通过安装插件[talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)可以进行视频通话和文字聊天。 
 * Nextcloud强制要求使用SSL加密链接，因此<h3>要求参与部署的服务器本身必须拥有域名。</h3> 
-* 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中。
-* 此例中，仅需运行命令并根据提示输入信息，Nextcloud就会部署于服务器上。
-## Summary
-* Nextcloud is basically a file-sharing platform, but it could be used to hold a video conferencing after enable a pre-installed app <i> [talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)</i>.
-* SSL is compulsory for the public server. A domain name shoud be linked to the server.
-* Containerization makes the installation hassle-free.
-## Prerequisite/先决条件  
-* [Get a free SSL certificate](https://github.com/xg590/tutorials/blob/master/LetsEncrypt.md) from <i>Let's Encrypt</i> 拿一个免费SSL证书: <br> A public cert (<i>fullchain.pem</i>) and a private key (<i>privkey.pem</i>) could be found in <i>/etc/letsencrypt/live/my_domain_name/</i> 在前述目录里可以找到证书和密钥至关重要。
-* [Docker-compose](https://github.com/xg590/tutorials/blob/master/docker/setup.md) is also required.
-## Automatic installation of nextcloud自动安装 
+## Use a VPS with Domain Name/使用预先配置好域名的虚拟服务器
+```shell
+# wget https://github.com/xg590/nextcloud/raw/master/install.sh && bash your_domain_name your_email
 ```
-sudo su
-wget https://raw.githubusercontent.com/xg590/nextcloud/master/automatic_installation_of_nextcloud.sh
-bash automatic_installation_of_nextcloud.sh
-``` 
-Yes, that's it. Deployment is done.安装完成 
-### Administration with [Provisional API](https://docs.nextcloud.com/server/stable/admin_manual/configuration_user/user_provisioning_api.html)
-#### Create User/新增用户
-```
+Then visit your_domain_name. The Nextcloud is there ready for you. Remember enable Nextcloud Talk if you want. / 安装完毕，可以访问你的域名使用Nextcloud了，别忘了打开Talk。 
+## Use Lightsail/使用亚马逊云服务器
+* Deploy the Nextcloud on an Amazon Lightsail Instance without using Docker.
+* [Here](https://github.com/xg590/nextcloud/blob/master/Lightsail.md) is the walk-through. 
+## Dockerize/容器化 Nextcloud 
+* Containerization makes the installation on an existing production server hassle-free.
+* 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中，这对已有用途的机器来说非常友好。
+
+## Administration with [Provisional API](https://docs.nextcloud.com/server/stable/admin_manual/configuration_user/user_provisioning_api.html)
+### Create User/新增用户
+```python
 import requests
 url     = 'https://personal_domain/ocs/v1.php/cloud/users'
 auth    = ('admin_name', 'admin_passwd')
