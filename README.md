@@ -43,51 +43,26 @@ Anticipated Outcome
   </data>
 </ocs>
 ```
-### Administration with [Nextcloud Console](https://docs.nextcloud.com/server/18/admin_manual/configuration_server/occ_command.html)
-#### Latest login timestamp
+## Administration with [Nextcloud Console](https://docs.nextcloud.com/server/18/admin_manual/configuration_server/occ_command.html)
+### Latest login timestamp
 ```
-docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ user:lastseen <username>" 
+sudo -u www-data php /var/www/nextcloud/occ user:lastseen <username> 
 ```
-#### Add new user/新增用户 
+### Add new user/新增用户 
 ```
-docker exec --user www-data nextcloud sh -c "export OC_PASS=newpassword; php /var/www/nextcloud/occ user:add --password-from-env  --display-name=\"Fred Jones\" --group=\"users\" fred"
+sudo -u www-data bash -c "export OC_PASS=newpassword; php /var/www/nextcloud/occ user:add --password-from-env  --display-name=\"Fred Jones\" --group=\"users\" fred"
 ``` 
-#### Install talk
+### Enable talk
 The app is called Talk in Nextcloud GUI but Spreed in OCC<br>
 安装talk插件，应用商店里下载nextcloud talk进行聊天
+``` 
+sudo -u www-data php /var/www/nextcloud/occ app:enable spreed 
 ```
-docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ app:install spreed"
-docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ app:enable spreed"
+### Transfer ownership of other's files/folder
 ```
-Dismiss this warning "PHP Fatal error: Cannot declare class OCA\Talk\Migration\Version2000Date20170707093535, ... ..."
-#### Install talk for Nextcloud 19 @ Jun 06 2020
-Since talk is not pre-installed with Nextcloud 19.0.0, we need download it from [app store](https://apps.nextcloud.com/apps/spreed) and install it manually.
+sudo -u www-data php /var/www/nextcloud/occ files:transfer-ownership --path="Video" old_owner new_owner 
 ```
-wget -O /tmp/spreed.tgz https://github.com/nextcloud/spreed/releases/download/v9.0.3/spreed-9.0.3.tar.gz 
-sudo -u www-data tar zxvf /tmp/spreed.tgz -C /tmp 
-sudo mv /tmp/spreed /somewhere
+### Copy files to Nextcloud user in container 
 ```
-Now mount spreed directory to container, just like what was done to data directory: Edit docker-compose.yml
-```
-services: 
-  app: 
-    volumes: 
-      - /somewhere/spreed:/var/www/nextcloud/apps/spreed
-```
-Enable it
-```
-docker exec --user www-data nextcloud sh -c "php /var/www/nextcloud/occ app:enable spreed"
-```
-#### Transfer ownership of other's files/folder
-```
-docker exec --user www-data nextcloud sh -c 'php /var/www/nextcloud/occ files:transfer-ownership --path="Video" old_owner new_owner'
-```
-#### Copy files from host machine to Nextcloud user in container
-Copy files 
-```
-docker cp /directory_on_host_machine/. nextcloud_container_id:/var/www/nextcloud/data/USERNAME/files/Video/
-```
-Scan files
-```
-docker exec --user www-data nextcloud_container_id sh -c 'php /var/www/nextcloud/occ files:scan USERNAME'
+sudo -u www-data php /var/www/nextcloud/occ files:scan <username> 
 ``` 
