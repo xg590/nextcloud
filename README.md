@@ -1,8 +1,8 @@
 # Overview
 * Nextcloud is basically a file-sharing platform, but it could be used to hold a video conferencing after enable a pre-installed app <i> [talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)</i>.
-* SSL is compulsory for the public server. A domain name shoud be linked to the server. 
+* SSL is compulsory for the public server. A domain name shoud be configurated before the Nextcloud deployment. 
 * Nextcloud是一个文件云，但通过安装插件[talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)可以进行视频通话和文字聊天。 
-* Nextcloud强制要求使用SSL加密链接，因此<h3>要求参与部署的服务器本身必须拥有域名。</h3> 
+* Nextcloud强制要求使用SSL加密链接，因此<b>要求参与部署的服务器本身必须拥有域名。</b> 
 ## Use a VPS with Domain Name/使用预先配置好域名的虚拟服务器
 ```shell
 root# wget https://github.com/xg590/nextcloud/raw/master/install.sh && bash your_domain_name your_email
