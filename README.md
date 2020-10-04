@@ -1,13 +1,13 @@
-# Overview
+# Nextcloud Deployment Automation (Tested on Ubuntu 20.04)
 * Nextcloud is basically a file-sharing platform, but it could be used to hold a video conferencing after enable a pre-installed app <i> [talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)</i>.
 * SSL is compulsory for the public server. A domain name shoud be configurated before the Nextcloud deployment. 
 * Nextcloud是一个文件云，但通过安装插件[talk](https://github.com/xg590/nextcloud/blob/master/README.md#install-talk)可以进行视频通话和文字聊天。 
 * Nextcloud强制要求使用SSL加密链接，因此<b>要求参与部署的服务器本身必须拥有域名。</b> 
-## Use a VPS with Domain Name/使用预先配置好域名的虚拟服务器
+## Use a new VPS with Domain Name/使用预先配置好域名的虚拟服务器
 ```shell
-root# wget https://github.com/xg590/nextcloud/raw/master/install.sh && bash your_domain_name your_email
+root# wget https://github.com/xg590/nextcloud/raw/master/install.sh && bash ./install.sh your_domain_name your_email && sudo -u www-data php /var/www/nextcloud/occ app:enable spreed 
 ```
-Then visit your_domain_name. The Nextcloud is there ready for you. Remember enable Nextcloud Talk if you want. / 安装完毕，可以访问你的域名使用Nextcloud了，别忘了打开Talk。 
+That's it! Visit your_domain_name. The Nextcloud is there ready for you. / 安装完毕，可以访问你的域名使用Nextcloud了。 
 ## Use Lightsail/使用亚马逊云服务器
 * Deploy the Nextcloud on an Amazon Lightsail Instance without using Docker.
 * [Here](https://github.com/xg590/nextcloud/blob/master/Lightsail.md) is the walk-through. 
