@@ -20,7 +20,7 @@ apt update -y && apt install -y php-gd                 \
 
 # Install Nextcloud
 root_dir=/var/www/html
-wget -O nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/nextcloud-21.0.1.tar.bz2
+wget -O nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/latest.tar.bz2
 tar jxf nextcloud.tar.bz2 -C $root_dir
 nextcloud_dir=$root_dir/nextcloud
 cat << EOF > $nextcloud_dir/config/autoconfig.php
