@@ -14,7 +14,10 @@ That's it! Visit your_domain_name. The Nextcloud is there ready for you. / 安�
 ## Dockerize/容器化 Nextcloud 
 * Containerization makes the installation on an existing production server hassle-free.
 * 容器技术(containerization)为程序提供了标准、一致、孤立的运行环境，确保软件运行依赖的全部资源都在容器中，这对已有用途的机器来说非常友好。
-
+## Deploy in the Local Network (Tested on Ubuntu 20.04 and Raspbian OS)
+```
+root# wget https://raw.githubusercontent.com/xg590/nextcloud/master/install_lan.sh ; bash install_lan.sh
+```
 ## Administration with [Provisional API](https://docs.nextcloud.com/server/stable/admin_manual/configuration_user/user_provisioning_api.html)
 ### Create User/新增用户
 ```python
